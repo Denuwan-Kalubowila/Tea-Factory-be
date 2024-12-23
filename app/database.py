@@ -4,11 +4,13 @@ This module contains the database configuration and session management
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from dotenv import find_dotenv, load_dotenv
 from sqlalchemy.ext.declarative import declarative_base
 
-URL = os.getenv('DB_URL')
+load_dotenv(find_dotenv())
 
-engine= create_engine(URL)
+engine= create_engine(os.getenv('DB_URL'))      
+     
 SessionLocal=sessionmaker(autocommit=False,autoflush=False,bind=engine)
 
 Base= declarative_base()
