@@ -11,7 +11,7 @@ class SupplyData(Base):
     leaf_id = Column(Integer, ForeignKey('tea_leaves.leaf_id'))
     quantity = Column(Integer)
     route_id = Column(Integer, ForeignKey('route.route_id'))
-    created_at = Column(DateTime)
+    created_at = Column(DateTime, default=datetime.utcnow)
 
     # Relationships
     suplier = relationship("Suplier", backref=backref("supplies", cascade="all, delete-orphan"))
