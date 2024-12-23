@@ -29,7 +29,7 @@ class Data(BaseModel):
 # GET endpoint to get daily supply
 @router.get('/daily_supply_quantity/', response_model=Data)
 def get_daily_supply_quantity(db: Session = Depends(get_db)):
-    daily_matrix = DailySupply().daily_supply_quntity(db)
+    daily_matrix = DailySupply().daily_supply_quantity(db)
     return Data(**daily_matrix)
 
 # GET endpoint to get monthly supply
