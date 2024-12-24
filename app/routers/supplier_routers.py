@@ -34,4 +34,5 @@ def get_all_supliers(db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="No suppliers found")
     
     # Return a StreamingResponse
-    return StreamingResponse(stream(), media_type="application/json")
+    #return StreamingResponse(stream(), media_type="application/json")
+    return res
