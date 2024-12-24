@@ -1,4 +1,4 @@
-from datetime import date as Date
+from datetime import date as Date, datetime, timedelta
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import func
@@ -53,6 +53,30 @@ class DailySupply:
                 'route': row.route_name,
                 'total_quantity': row.total_quantity,
                 'date': row.date
+            })
+        
+        return result
+    
+    @staticmethod
+    def weekly_supply(db: Session) -> list[dict[str, any]]:
+        res = db.query(
+            func.date(check_route.updated_at).label('date'),
+            func.sum(check_route.reject).label('total_reject'),
+            func.sum(check_route.prod).label('total_prod'),
+        ).filter(
+            func.date(check_route.updated_at) >= Date.today() - timedelta(days=7)
+        ).group_by(
+            func.date(check_route.updated_at)
+        ).order_by(
+            func.date(check_route.updated_at)
+        ).all() 
+        result = []
+        for row in res:
+            result.append({
+                'date': row.date,
+                'day_name': datetime.fromisoformat(str(row.date)).strftime('%A'),
+                'total_prod': row.total_prod,
+                'total_reject': row.total_reject
             })
         
         return result
