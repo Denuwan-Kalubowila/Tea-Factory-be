@@ -20,12 +20,11 @@ def get_all_supliers(db: Session = Depends(get_db)):
     """
     res = db.query(Suplier).all()
 
-    """def stream():
+    def stream():
         for suplier in res:
-            yield suplier"""
+            yield suplier
 
     if not res:
         raise HTTPException(status_code=404, detail="No suppliers found")
     
-    return res
-    #return StreamingResponse(stream(), media_type="application/json")
+    return StreamingResponse(stream(), media_type="application/json")
