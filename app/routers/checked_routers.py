@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends
+from datetime import datetime
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.models.check import CheckedRouteQuantity
 from app.database import get_db
@@ -29,7 +30,7 @@ class Data(BaseModel):
 # GET endpoint to get daily supply
 @router.get('/daily_supply_quantity/', response_model=Data)
 def get_daily_supply_quantity(db: Session = Depends(get_db)):
-    daily_matrix = DailySupply().daily_supply_quantity(db)
+    daily_matrix = DailySupply().daily_supply_quntity(db)
     return Data(**daily_matrix)
 
 # GET endpoint to get monthly supply
@@ -43,6 +44,23 @@ def get_monthly_supply_quantity(db: Session = Depends(get_db)):
 def get_daily_supply_prod(db: Session = Depends(get_db)):
    return DailySupply().daily_supply_from_route(db)
 
+
+class week_supply(BaseModel):
+    date: datetime
+    day_name: str
+    total_prod: int
+    total_reject: int
+
+# GET endpoint to get week supply to quantity
+@router.get('/weekly_supply/',response_model=list[week_supply],status_code=200)
+def get_weekly_supply(db: Session = Depends(get_db)):
+    try:
+        weekly = DailySupply().weekly_supply(db)
+        if not weekly:
+             raise HTTPException(status_code=404, detail="No supply data found")
+        return weekly
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 
 
