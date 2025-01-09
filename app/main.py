@@ -37,3 +37,7 @@ app.include_router(checked_routers.router)
 app.include_router(supply_routers.router)
 
 Base.metadata.create_all(bind=engine)
+
+
+
+
