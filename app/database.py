@@ -8,7 +8,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 URL = os.getenv('DB_URL')
 
-engine= create_engine(URL)
+engine= create_engine("postgresql://postgres:teaApp32#$$@database-tea-factory.cx8ygyuusoap.us-east-1.rds.amazonaws.com:5432/tea_users")
 SessionLocal=sessionmaker(autocommit=False,autoflush=False,bind=engine)
 
 Base= declarative_base()
